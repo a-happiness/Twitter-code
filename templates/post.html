@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+</head>
+<body>
+<a href="/logout">logout</a><br>
+<a href="/login/account/post">posts</a><br>
+<a href="/login/account/add_post">add post</a><br>
+<a href="/login/account/search_to_follow">search to follow</a><br>
+<a href="/login/account/followers">followers</a><br>
+<a href="/login/account/followings">followings</a><br><br>
+Hi {{username}}, you can see your posts.<br><br><br>
+<h1>Posts</h1>
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if post %}
+    {% for id ,item in enumerate(post, start=1) %}
+    <tr>
+        <td>{{ id }}</td>
+        <td>{{ item[2] }}</td>
+        <td>{{ item[3] }}</td>
+        <td>{{ item[4] }}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="4">No posts available.</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add post</title>
+</head>
+<body>
+<a href="/logout">logout</a><br>
+<a href="/login/account/post">posts</a><br>
+<a href="/login/account/add_post">add post</a><br>
+<a href="/login/account/search_to_follow">search to follow</a><br>
+<a href="/login/account/followers">followers</a><br>
+<a href="/login/account/followings">followings</a><br>
+Hi {{username}}, you can add a new post.<br><br><br>
+
+<h2>Adding post</h2><br>
+<form action="/login/account/add_post" method="post">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+    <label for="date">Date:</label><br>
+    <input type="date" id="date" name="date" required><br><br>
+    <label for="content">Content:</label><br>
+    <input type="text" id="content" name="content" required><br><br>
+    <input type="submit" value="Add">
+</form>
+</body>
+</html>
