@@ -52,7 +52,8 @@ def delete_table():
 def check_info_exists(info, table, username='username'):
     with sqlite3.connect('twitter_database.sqlite') as conn:
         cur = conn.cursor()
-        check_value = cur.execute(f'select * from {table} where ({username})=?', [info]).fetchone()
+        check_value = cur.execute(f'select * from {table} where ({username})=?',
+                                  [info]).fetchone()
         conn.commit()
         return check_value
 
@@ -69,7 +70,8 @@ def insert_to_table(table, head, data):
 def read_database(table, params, condition="username"):
     with sqlite3.connect('twitter_database.sqlite') as conn:
         cur = conn.cursor()
-        data = cur.execute(f'select * from {table} where {condition}=?', [params]).fetchall()
+        data = cur.execute(f'select * from {table} where {condition}=?',
+                           [params]).fetchall()
         conn.commit()
         return data
 
@@ -90,8 +92,8 @@ def get_sign():
         user = check_info_exists(username, "Users")
         if user is None:
             insert_to_table('Users', head, data)
-            return 'Your information saved 🖐🏻'
-        return 'your information already existed'
+            return render_template('sign_up.html', new_user=True)
+        return render_template('sign_up.html', duplicate_user=True)
     return render_template('sign_up.html')
 
 
@@ -102,9 +104,9 @@ def get_login():
         password = request.form.get('password')
         user = check_info_exists(username, 'Users')
         if user is None:
-            return redirect('/sign_up')
+            return render_template('/login.html', no_user=True)
         if user[3] != password:
-            return 'Your password is invalid'
+            return render_template('/login.html', invalid_pwd=True)
         session['logged_in'] = True
         session['username'] = username
         return redirect('/login/account')
@@ -123,7 +125,8 @@ def account():
     if session.get('logged_in') is not True:
         return redirect('/login')
     username = session.get('username')
-    return render_template('account.html', username=username)
+    return render_template('account.html',
+                           username=username, active='account')
 
 
 @app.route('/login/account/add_post', methods=['GET', 'POST'])
@@ -138,8 +141,10 @@ def add_post():
         head = ('username', 'title', 'date', 'content')
         data = (username, title, date, content)
         insert_to_table('Posts', head, data)
-        return 'You added a new post 🆗'
-    return render_template('add_post.html', username=username)
+        return render_template('add_post.html', username=username,
+                               active='add_post', new_post=True)
+    return render_template('add_post.html', username=username,
+                           active='add_post')
 
 
 @app.route('/login/account/post')
@@ -148,7 +153,7 @@ def post():
     if session.get('logged_in') is not True:
         return redirect('/login')
     post = read_database('Posts', params=username)
-    return render_template('post.html', post=post[::-1], enumerate=enumerate, username=username)
+    return render_template('post.html', post=post[::-1], enumerate=enumerate, username=username, active='post')
 
 
 @app.route('/login/account/search_to_follow', methods=["GET", "POST"])
@@ -160,19 +165,27 @@ def search_to_follow():
         search = request.form.get('search_to_follow')
         user = check_info_exists(search, 'Users')
         if user is None:
-            return 'Not found this user'
+            return render_template('search_to_follow.html',
+                                   username=username, active='search_to_follow',
+                                   no_user=True)
         follows = read_database('Follows', params=username)
         if search == username:
-            return 'You can not follow yourself !'
-        print('follows: ', follows)
+            return render_template('search_to_follow.html',
+                                   username=username, active='search_to_follow',
+                                   self_follow=True)
         for follow in follows:
             if search == follow[3]:
-                return 'You already following this user'
+                return render_template('search_to_follow.html',
+                                       username=username, active='search_to_follow',
+                                       duplicate_follow=True)
         head = ('username', 'followers', 'followings')
         data = (username, username, search)
         insert_to_table('Follows', head, data)
-        return 'A new user was added to your followings'
-    return render_template('search_to_follow.html', username=username)
+        return render_template('search_to_follow.html',
+                               username=username, active='search_to_follow',
+                               new_follow=True)
+    return render_template('search_to_follow.html',
+                           username=username, active='search_to_follow')
 
 
 @app.route('/login/account/followings')
@@ -182,7 +195,8 @@ def following():
         return redirect('/login')
     report = read_database('Follows', params=username, condition='followers')
     print(report)
-    return render_template('following.html', report=report, enumerate=enumerate, username=username)
+    return render_template('following.html', report=report,
+                           enumerate=enumerate, username=username, active='followings')
 
 
 @app.route('/login/account/followers')
@@ -192,7 +206,8 @@ def follower():
         return redirect('/login')
     report = read_database('Follows', params=username, condition='followings')
     print(report)
-    return render_template('follower.html', report=report, enumerate=enumerate, username=username)
+    return render_template('follower.html', report=report,
+                           enumerate=enumerate, username=username, active='followers')
 
 
 if __name__ == '__main__':

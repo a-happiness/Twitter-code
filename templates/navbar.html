@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark mb-4">
+    <a class="navbar-brand" href="#">{{username}}</a>
+    <ul class="navbar-nav">
+        <li class="nav-item {% if active =='account' %} active {% endif %}">
+            <a class="nav-link" href="/login/account">Home</a>
+        </li>
+        <li class="nav-item {% if active =='post' %} active {% endif %}">
+            <a class="nav-link " href="/login/account/post">Posts</a>
+        </li>
+        <li class="nav-item {% if active =='add_post' %} active {% endif %}">
+            <a class="nav-link " href="/login/account/add_post">Add Post</a>
+        </li>
+        <li class="nav-item {% if active =='search_to_follow' %} active {% endif %}">
+            <a class="nav-link" href="/login/account/search_to_follow">Search to Follow</a>
+        </li>
+        <li class="nav-item {% if active =='followings' %} active {% endif %}">
+            <a class="nav-link" href="/login/account/followings">Followings</a>
+        </li>
+        <li class="nav-item {% if active =='followers' %} active {% endif %}">
+            <a class="nav-link" href="/login/account/followers">Followers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

@@ -2,16 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f2f2f2; /* Light grey background for the whole page */
+        }
+
+        .navbar {
+            background: linear-gradient(45deg, #2c3e50, #2f545d);
+        }
+
+        .navbar-brand {
+            margin-right: 4cm;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .navbar-nav {
+            margin-left: 0;
+        }
+
+        .nav-item {
+            text-align: center;
+        }
+
+        .nav-link {
+            color: #d0d0d0; /* Light gray for default links */
+        }
+
+        .nav-link:hover {
+            color: #ffffff; /* White on hover for better visibility */
+        }
+
+        .nav-item.active .nav-link {
+            color: #ffffff; /* White for active link */
+        }
+
+        .card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+        }
+
+        .card-title {
+            color: #344048;
+            font-weight: bold;
+        }
+
+        .card-text {
+            color: #3b464f;
+        }
+
+
+        .alert {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .alert .close {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -25px;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-<h2>Login</h2><br>
-<form action="/login" method="post">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" required><br><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="login">
-</form>
+<nav class="navbar navbar-expand-sm navbar-dark mb-4">
+    <a class="navbar-brand" href="#">Twitter</a>
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/login">Login</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="/sign_up">Sign up</a>
+        </li>
+
+    </ul>
+</nav>
+<div class="container">
+    <h2>Login</h2>
+    <p>Please fill in all fields to login</p>
+    <form action="/login" method="post" class="was-validated">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required>
+            <div class="valid-feedback">Valid</div>
+            <div class="invalid-feedback">Please fill out this field</div>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+            <div class="valid-feedback">Valid</div>
+            <div class="invalid-feedback">Please fill out this field</div>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="remember" required> I want to login.
+                <div class="valid-feedback">Valid</div>
+                <div class="invalid-feedback">Check this checkbox to continue</div>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    {% if no_user %}
+    <div class="alert alert-info alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Check signing up!</strong> please sign up first
+  </div>
+    {% endif %}
+    {% if invalid_pwd %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Warning!</strong> your password is invalid
+    </div>
+    {% endif %}
+</div>
+<!--<h2>Login</h2><br>-->
+<!--<form action="/login" method="post">-->
+<!--    <label for="username">Username:</label><br>-->
+<!--    <input type="text" id="username" name="username" required><br><br>-->
+<!--    <label for="password">Password:</label><br>-->
+<!--    <input type="password" id="password" name="password" required><br><br>-->
+<!--    <input type="submit" value="login">-->
+<!--</form>-->
 </body>
 </html>
