@@ -3,6 +3,11 @@
 <head>
     <title>{{ username }}'s posts</title>
     {% include 'style.html' %}
+    <script>
+        function confirmDelete(itemTitle) {
+            return confirm("Are you sure you want to delete the post titled: " + itemTitle + "?");
+        }
+    </script>
 </head>
 <body>
 
@@ -21,6 +26,7 @@
             <th>Title</th>
             <th>Date</th>
             <th>Content</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -31,11 +37,17 @@
             <td>{{ item[2] }}</td>
             <td>{{ item[3] }}</td>
             <td>{{ item[4] }}</td>
+            <td>
+                <form action="/login/account/delete_post" method="post" onsubmit="return confirmDelete('{{ item[2] }}');">
+                    <input type="hidden" name="title" value="{{ item[2] }}">
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
         {% else %}
         <tr>
-            <td colspan="4">No posts available.</td>
+            <td colspan="5">No posts available.</td>
         </tr>
         {% endif %}
         </tbody>

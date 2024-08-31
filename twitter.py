@@ -49,6 +49,15 @@ def delete_table():
         conn.commit()
 
 
+def delete_record(table, username, condition, info):
+    with sqlite3.connect('twitter_database.sqlite') as conn:
+        cur = conn.cursor()
+        deleted_record = cur.execute(f'delete from {table} where username = ?'
+                                     f' and {condition}=?', [username, info])
+        conn.commit()
+        return deleted_record
+
+
 def check_info_exists(info, table, username='username'):
     with sqlite3.connect('twitter_database.sqlite') as conn:
         cur = conn.cursor()
@@ -154,6 +163,25 @@ def post():
         return redirect('/login')
     post = read_database('Posts', params=username)
     return render_template('post.html', post=post[::-1], enumerate=enumerate, username=username, active='post')
+
+
+@app.route('/login/account/delete_post', methods=['GET', 'POST'])
+def delete_post():
+    username = session.get('username')
+    if session.get('logged_in') is not True:
+        return redirect('/login')
+    if request.method == 'POST':
+        table = 'Posts'
+        condition = 'title'
+        info = request.form.get('title')
+        if not info:
+            return "Title is required", 400
+
+        deleted_count = delete_record(table, username, condition, info)
+        if deleted_count is not None:
+            return redirect('/login/account/post')
+        else:
+            return "An error occurred while deleting the post", 500
 
 
 @app.route('/login/account/search_to_follow', methods=["GET", "POST"])
