@@ -5,6 +5,14 @@ app = Flask(__name__)
 app.secret_key = 'STTajUdwAUU2BPzPTPtc7ppeFpPPplhpiMeTeSoEJE'
 
 
+@app.template_filter('truncatewords')
+def truncate_words_filter(text, num_words=7):
+    words = text.split()
+    if len(words) > num_words:
+        return ' '.join(words[:num_words]) + '...'
+    return text
+
+
 @app.route('/')
 def index():
     return redirect('/login')

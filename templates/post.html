@@ -3,6 +3,63 @@
 <head>
     <title>{{ username }}'s posts</title>
     {% include 'style.html' %}
+    <style>
+        .post-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .post-box {
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+            width: calc(50% - 10px);
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            background-color: rgb(253, 252, 252);
+        }
+
+        .post-box:hover {
+            transform: scale(1.05);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, rgb(47, 68, 94), #33606c);
+            color: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .post-title {
+            font-size: 2em;
+        }
+
+        .post-content {
+            max-height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 1em;
+        }
+
+        .remove-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            border-radius: 12px;
+            margin-bottom: -5px;
+        }
+    </style>
+
+
     <script>
         function confirmDelete(itemTitle) {
             return confirm("Are you sure you want to delete the post titled: " + itemTitle + "?");
@@ -19,40 +76,26 @@
         </div>
     </div>
     <h1>Posts</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Date</th>
-            <th>Content</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="post-container">
         {% if post %}
             {% for id, item in enumerate(post, start=1) %}
-                <tr>
-                    <td>{{ id }}</td>
-                    <td>{{ item[2] }}</td>
-                    <td>{{ item[3] }}</td>
-                    <td>{{ item[4] }}</td>
-                    <td>
-                        <form action="/login/account/delete_post" method="post"
-                              onsubmit="return confirmDelete('{{ item[2] }}');">
-                            <input type="hidden" name="title" value="{{ item[2] }}">
-                            <button type="submit">Remove</button>
-                        </form>
-                    </td>
-                </tr>
+                <a href="/post/{{ item[2] }}" class="post-box">
+                    <div class="post-header">
+                        <div class="post-title">{{ item[2] }}</div>
+                        <div class="post-date">{{ item[3] }}</div>
+                    </div>
+                    <div class="post-content">{{ item[4] | truncatewords(7) }}</div>
+                    <form action="/login/account/delete_post" method="post" class="remove-button"
+                          onsubmit="return confirmDelete('{{ item[2] }}');">
+                        <input type="hidden" name="title" value="{{ item[2] }}">
+                        <button class="remove-button" type="submit">Remove</button>
+                    </form>
+                </a>
             {% endfor %}
         {% else %}
-            <tr>
-                <td colspan="5">No posts available.</td>
-            </tr>
+            <div>No posts available.</div>
         {% endif %}
-        </tbody>
-    </table>
+    </div>
 </div>
 </body>
 </html>
