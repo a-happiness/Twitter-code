@@ -5,6 +5,11 @@
     <title>{{ username }}'s followings</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     {% include 'style.html' %}
+    <script>
+        function confirmDelete(itemTitle) {
+            return confirm("Are you sure you want to unfollow " + itemTitle + "?");
+        }
+    </script>
 
 </head>
 <body>
@@ -24,20 +29,28 @@
                 <tr>
                     <th>Id</th>
                     <th>Followings</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% if report %}
-                {% for id, item in enumerate(report, start=1) %}
-                <tr>
-                    <td>{{ id }}</td>
-                    <td>{{ item[3] }}</td>
-                </tr>
-                {% endfor %}
+                    {% for id, item in enumerate(report, start=1) %}
+                        <tr>
+                            <td>{{ id }}</td>
+                            <td>{{ item[3] }}</td>
+                            <td>
+                                <form action="/login/account/un_follow" method="post"
+                                      onsubmit="return confirmDelete('{{ item[3] }}');">
+                                    <input type="hidden" name="followings" value="{{ item[3] }}">
+                                    <button type="submit">Unfollow</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 {% else %}
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                    </tr>
                 {% endif %}
                 </tbody>
             </table>

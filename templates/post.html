@@ -31,24 +31,25 @@
         </thead>
         <tbody>
         {% if post %}
-        {% for id, item in enumerate(post, start=1) %}
-        <tr>
-            <td>{{ id }}</td>
-            <td>{{ item[2] }}</td>
-            <td>{{ item[3] }}</td>
-            <td>{{ item[4] }}</td>
-            <td>
-                <form action="/login/account/delete_post" method="post" onsubmit="return confirmDelete('{{ item[2] }}');">
-                    <input type="hidden" name="title" value="{{ item[2] }}">
-                    <button type="submit">Remove</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+            {% for id, item in enumerate(post, start=1) %}
+                <tr>
+                    <td>{{ id }}</td>
+                    <td>{{ item[2] }}</td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[4] }}</td>
+                    <td>
+                        <form action="/login/account/delete_post" method="post"
+                              onsubmit="return confirmDelete('{{ item[2] }}');">
+                            <input type="hidden" name="title" value="{{ item[2] }}">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
         {% else %}
-        <tr>
-            <td colspan="5">No posts available.</td>
-        </tr>
+            <tr>
+                <td colspan="5">No posts available.</td>
+            </tr>
         {% endif %}
         </tbody>
     </table>
