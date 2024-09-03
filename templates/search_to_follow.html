@@ -1,50 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ username }}-search to follow</title>
-    {% include 'style.html' %}
-</head>
-
-<body>
-{% include 'navbar.html' %}
-<div class="container">
-    <h2>Adding user</h2>
-    <p>Please search a valid username to add a new following</p>
-    <form action="/login/account/search_to_follow" method="POST" class="was-validated">
-        <div class="form-group">
-            <label for="search">Search to follow:</label>
-            <input type="text" class="form-control" id="search" placeholder="serach username" name="search_to_follow"
-                   required>
-            <div class="valid-feedback">Valid.</div>
-            <div class="invalid-feedback">Please fill out this field.</div>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-    {% if no_user %}
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Warning!</strong> this user not found.
-    </div>
-    {% endif %}
-    {% if self_follow %}
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Warning!</strong> you can not follow yourself !
-    </div>
-    {% endif %}
-    {% if duplicate_follow %}
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Warning!</strong> you already following this user.
-    </div>
-    {% endif %}
-    {% if new_follow %}
-    <div class="alert alert-success alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Success!</strong> a new user was added to your followings.
-    </div>
-    {% endif %}
-</div>
-</body>
-</html>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>{{ username }}-search to follow</title>#}
+{#    {% include 'style.html' %}#}
+{#</head>#}
+{##}
+{#<body>#}
+{#{% include 'navbar.html' %}#}
+{#<div class="container">#}
+{#    <h2>Adding user</h2>#}
+{#    <p>Please search a valid username to add a new following</p>#}
+{#    <form action="/login/account/search_to_follow" method="POST" class="was-validated">#}
+{#        <div class="form-group">#}
+{#            <label for="search">Search to follow:</label>#}
+{#            <input type="text" class="form-control" id="search" placeholder="serach username" name="search_to_follow"#}
+{#                   required>#}
+{#            <div class="valid-feedback">Valid.</div>#}
+{#            <div class="invalid-feedback">Please fill out this field.</div>#}
+{#        </div>#}
+{#        <button type="submit" class="btn btn-primary">Search</button>#}
+{#    </form>#}
+{#    {% if no_user %}#}
+{#    <div class="alert alert-warning alert-dismissible">#}
+{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
+{#        <strong>Warning!</strong> this user not found.#}
+{#    </div>#}
+{#    {% endif %}#}
+{#    {% if self_follow %}#}
+{#    <div class="alert alert-warning alert-dismissible">#}
+{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
+{#        <strong>Warning!</strong> you can not follow yourself !#}
+{#    </div>#}
+{#    {% endif %}#}
+{#    {% if duplicate_follow %}#}
+{#    <div class="alert alert-warning alert-dismissible">#}
+{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
+{#        <strong>Warning!</strong> you already following this user.#}
+{#    </div>#}
+{#    {% endif %}#}
+{#    {% if new_follow %}#}
+{#    <div class="alert alert-success alert-dismissible">#}
+{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
+{#        <strong>Success!</strong> a new user was added to your followings.#}
+{#    </div>#}
+{#    {% endif %}#}
+{#</div>#}
+{#</body>#}
+{#</html>#}
