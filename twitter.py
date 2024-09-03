@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask, redirect, request, render_template, session
 from functions import *
 
@@ -68,24 +70,28 @@ def account():
 
 @app.route('/login/account/add_post', methods=['GET', 'POST'])
 def add_post():
+    msg = None
     username = session.get('username')
     if session.get('logged_in') is not True:
         return redirect('/login')
+    if request.method == 'GET':
+        session['csrf_token'] = str(uuid.uuid4())
     if request.method == 'POST':
-        title = request.form.get('title')
-        date = request.form.get('date')
-        content = request.form.get('content')
-        head = ('username', 'title', 'date', 'content')
-        data = (username, title, date, content)
-        insert_to_table('Posts', head, data)
-        return render_template('add_post.html', username=username,
-                               active='add_post', new_post=True)
+        token = request.form.get('csrf_token')
+        if token == session.get('csrf_token'):
+            title = request.form.get('title')
+            content = request.form.get('content')
+            head = ('username', 'title', 'content')
+            data = (username, title, content)
+            insert_to_table('Posts', head, data)
+            msg = 'you added a new post.'
+            session.pop('csrf_token', None)
     return render_template('add_post.html', username=username,
-                           active='add_post')
+                           active='add_post', msg=msg, csrf_token=session.get('csrf_token'))
 
 
 @app.route('/login/account/post')
-def post():
+def _post():
     username = session.get('username')
     if session.get('logged_in') is not True:
         return redirect('/login')

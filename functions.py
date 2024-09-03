@@ -18,8 +18,8 @@ def create_tables():
                 post_id integer primary key autoincrement,
                 username text not null,
                 title text not null,
-                date datetime not null,
                 content text not null,
+                post_at datetime default current_timestamp,
                 foreign key (username) references Users (username))
             ''')
 
@@ -33,6 +33,17 @@ def create_tables():
                 foreign key (username) references Users (username),
                 foreign key (followers) references Users (username))
             ''')
+
+        cur.execute(
+            '''
+            create table if not exists Messages (
+                id integer primary key autoincrement,
+                senders text not null,
+                receivers text not null,
+                text text not null,
+                send_at datetime default current_timestamp,
+                foreign key (senders) references Users (username))
+            ''')
         conn.commit()
 
 
@@ -40,7 +51,7 @@ def delete_table():
     table_name = ('Users', 'Posts', 'Follows')
     with sqlite3.connect('twitter_database.sqlite') as conn:
         cur = conn.cursor()
-        cur.execute('drop table if exists Follows')
+        cur.execute('drop table if exists Posts')
         conn.commit()
 
 
