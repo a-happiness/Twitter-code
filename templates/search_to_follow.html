@@ -1,50 +1,93 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>{{ username }}-search to follow</title>#}
-{#    {% include 'style.html' %}#}
-{#</head>#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ username }}-search to follow</title>
+    {% include 'style.html' %}
+
+</head>
+
+<body>
+
+{% include 'navbar.html' %}
+<div class="container">
+    <h2>Adding user</h2>
+    <p>Please search a valid username to add a new following</p>
+    <form id="searchForm" action="/login/account/search_to_follow" method="POST" class="was-validated">
+        <div class="form-group">
+            <label for="search">Search to follow:</label>
+            <input type="text" class="form-control" id="search" placeholder="search username" name="search_to_follow"
+                   required oninput="auto_search()">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <button type="button" id="followButton" class="btn btn-primary" disabled>Follow</button>
+    </form>
+    {% if no_user %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong> <strong>"{{ search }}"</strong> not found.
+        </div>
+    {% endif %}
+    {% if self_follow %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong> you can not follow yourself!
+        </div>
+    {% endif %}
+    {% if duplicate_follow %}
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong> you already following <strong>"{{ search }}"</strong>.
+        </div>
+    {% endif %}
+    {% if new_follow %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Acceptable!</strong> You can add <strong>"{{ search }}"</strong> to your followings. please hit the
+            button.
+        </div>
+        <script>document.getElementById('followButton').disabled = false;</script>
+    {% endif %}
+    {% if follow_added %}
+        <div class="alert alert-primary alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong> <strong>"{{ search }}"</strong> was added to your followings.
+        </div>
+    {% endif %}
+</div>
+<script src="/static/scripts/auto_search.js"></script>
+
+{#<script>#}
+{#    // From line 3 to 10, after two seconds, it automatically searches the entry and displays the necessary alert#}
 {##}
-{#<body>#}
-{#{% include 'navbar.html' %}#}
-{#<div class="container">#}
-{#    <h2>Adding user</h2>#}
-{#    <p>Please search a valid username to add a new following</p>#}
-{#    <form action="/login/account/search_to_follow" method="POST" class="was-validated">#}
-{#        <div class="form-group">#}
-{#            <label for="search">Search to follow:</label>#}
-{#            <input type="text" class="form-control" id="search" placeholder="serach username" name="search_to_follow"#}
-{#                   required>#}
-{#            <div class="valid-feedback">Valid.</div>#}
-{#            <div class="invalid-feedback">Please fill out this field.</div>#}
-{#        </div>#}
-{#        <button type="submit" class="btn btn-primary">Search</button>#}
-{#    </form>#}
-{#    {% if no_user %}#}
-{#    <div class="alert alert-warning alert-dismissible">#}
-{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
-{#        <strong>Warning!</strong> this user not found.#}
-{#    </div>#}
-{#    {% endif %}#}
-{#    {% if self_follow %}#}
-{#    <div class="alert alert-warning alert-dismissible">#}
-{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
-{#        <strong>Warning!</strong> you can not follow yourself !#}
-{#    </div>#}
-{#    {% endif %}#}
-{#    {% if duplicate_follow %}#}
-{#    <div class="alert alert-warning alert-dismissible">#}
-{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
-{#        <strong>Warning!</strong> you already following this user.#}
-{#    </div>#}
-{#    {% endif %}#}
-{#    {% if new_follow %}#}
-{#    <div class="alert alert-success alert-dismissible">#}
-{#        <button type="button" class="close" data-dismiss="alert">&times;</button>#}
-{#        <strong>Success!</strong> a new user was added to your followings.#}
-{#    </div>#}
-{#    {% endif %}#}
-{#</div>#}
-{#</body>#}
-{#</html>#}
+{#    let timeout = null;#}
+{##}
+{#    function auto_search() {#}
+{#        const searchInput = document.getElementById('search').value;#}
+{#        clearTimeout(timeout)#}
+{#        timeout = setTimeout(() => {#}
+{#            document.getElementById('searchForm').submit();#}
+{#        }, 2500);#}
+{#    }#}
+{##}
+{#    // From line 15 to 28, the follow button will be activated and you can send a request to the server by clicking on it.#}
+{##}
+{#    document.getElementById('followButton').addEventListener('click', function () {#}
+{#        const searchInput = document.getElementById('search').value;#}
+{#        const form = document.getElementById('searchForm');#}
+{#        form.action = '/login/account/add_follow';#}
+{#        document.getElementById('search').value = searchInput;#}
+{#        form.submit();#}
+{#    });#}
+{##}
+{#    window.onload = function () {#}
+{#        const searchInput = '{{ search | safe }}';#}
+{#        if (searchInput) {#}
+{#            document.getElementById('search').value = searchInput;#}
+{#        }#}
+{#    };#}
+{#</script>#}
+
+</body>
+</html>

@@ -1,4 +1,5 @@
 import uuid
+from crypt import methods
 
 from flask import Flask, redirect, request, render_template, session
 from functions import *
@@ -129,25 +130,37 @@ def search_to_follow():
         if user is None:
             return render_template('search_to_follow.html',
                                    username=username, active='search_to_follow',
-                                   no_user=True)
+                                   no_user=True, search=search)
         follows = read_database('Follows', params=username)
         if search == username:
             return render_template('search_to_follow.html',
                                    username=username, active='search_to_follow',
-                                   self_follow=True)
+                                   self_follow=True, search=search)
         for follow in follows:
             if search == follow[3]:
                 return render_template('search_to_follow.html',
                                        username=username, active='search_to_follow',
-                                       duplicate_follow=True)
-        head = ('username', 'followers', 'followings')
-        data = (username, username, search)
-        insert_to_table('Follows', head, data)
+                                       duplicate_follow=True, search=search)
+
         return render_template('search_to_follow.html',
                                username=username, active='search_to_follow',
-                               new_follow=True)
+                               new_follow=True, search=search)
     return render_template('search_to_follow.html',
                            username=username, active='search_to_follow')
+
+
+@app.route('/login/account/add_follow', methods=["POST"])
+def add_follow():
+    username = session.get('username')
+    if session.get('logged_in') is not True:
+        return redirect('/login')
+    search = request.form.get('search_to_follow')
+    head = ('username', 'followers', 'followings')
+    data = (username, username, search)
+    insert_to_table('Follows', head, data)
+    return render_template('search_to_follow.html',
+                           username=username, active='search_to_follow',
+                           follow_added=True, search=search)
 
 
 @app.route('/login/account/followings')
