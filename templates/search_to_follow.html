@@ -24,70 +24,48 @@
         <button type="button" id="followButton" class="btn btn-primary" disabled>Follow</button>
     </form>
     {% if no_user %}
-        <div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Warning!</strong> <strong>"{{ search }}"</strong> not found.
-        </div>
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Warning!</strong> <strong>"{{ search }}"</strong> not found.
+    </div>
     {% endif %}
     {% if self_follow %}
-        <div class="alert alert-info alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Warning!</strong> you can not follow yourself!
-        </div>
+    <div class="alert alert-info alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Warning!</strong> you can not follow yourself!
+    </div>
     {% endif %}
     {% if duplicate_follow %}
-        <div class="alert alert-warning alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Warning!</strong> you already following <strong>"{{ search }}"</strong>.
-        </div>
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Warning!</strong> you already following <strong>"{{ search }}"</strong>.
+    </div>
     {% endif %}
     {% if new_follow %}
-        <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Acceptable!</strong> You can add <strong>"{{ search }}"</strong> to your followings. please hit the
-            button.
-        </div>
-        <script>document.getElementById('followButton').disabled = false;</script>
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Acceptable!</strong> You can add <strong>"{{ search }}"</strong> to your followings. please hit the
+        button.
+    </div>
+    <script>document.getElementById('followButton').disabled = false;</script>
     {% endif %}
     {% if follow_added %}
-        <div class="alert alert-primary alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Success!</strong> <strong>"{{ search }}"</strong> was added to your followings.
-        </div>
+    <div class="alert alert-primary alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Success!</strong> <strong>"{{ search }}"</strong> was added to your followings.
+    </div>
     {% endif %}
 </div>
 <script src="/static/scripts/auto_search.js"></script>
+<script>
 
-{#<script>#}
-{#    // From line 3 to 10, after two seconds, it automatically searches the entry and displays the necessary alert#}
-{##}
-{#    let timeout = null;#}
-{##}
-{#    function auto_search() {#}
-{#        const searchInput = document.getElementById('search').value;#}
-{#        clearTimeout(timeout)#}
-{#        timeout = setTimeout(() => {#}
-{#            document.getElementById('searchForm').submit();#}
-{#        }, 2500);#}
-{#    }#}
-{##}
-{#    // From line 15 to 28, the follow button will be activated and you can send a request to the server by clicking on it.#}
-{##}
-{#    document.getElementById('followButton').addEventListener('click', function () {#}
-{#        const searchInput = document.getElementById('search').value;#}
-{#        const form = document.getElementById('searchForm');#}
-{#        form.action = '/login/account/add_follow';#}
-{#        document.getElementById('search').value = searchInput;#}
-{#        form.submit();#}
-{#    });#}
-{##}
-{#    window.onload = function () {#}
-{#        const searchInput = '{{ search | safe }}';#}
-{#        if (searchInput) {#}
-{#            document.getElementById('search').value = searchInput;#}
-{#        }#}
-{#    };#}
-{#</script>#}
+    window.onload = function () {
+        const searchInput = '{{ search | safe }}';
+        if (searchInput) {
+            document.getElementById('search').value = searchInput;
+        }
+    };
 
+</script>
 </body>
 </html>
